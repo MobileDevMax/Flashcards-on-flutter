@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+
+   void main() {
+     runApp(FlashcardsApp());
+   }
+
+   class FlashcardsApp extends StatelessWidget {
+     @override
+     Widget build(BuildContext context) {
+       return MaterialApp(
+         title: 'Flashcards',
+         theme: ThemeData(
+           primarySwatch: Colors.blue,
+         ),
+         home: FlashcardList(),
+       );
+     }
+   }
+
+   class FlashcardList extends StatelessWidget {
+     final List<Flashcard> flashcards = [
+       Flashcard(question: 'What is Flutter?', answer: 'It is an open source platform developed and maintained by Google.'),
+       Flashcard(question: 'What programming language is used in Flutter?', answer: 'Dart.'),
+       Flashcard(question: 'What is widget used for in flutter?', answer: 'To build a user interface.'),
+       
+     ];
+
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text('Flashcards'),
+         ),
+         body: ListView.builder(
+           itemCount: flashcards.length,
+           itemBuilder: (context, index) {
+             return Card(
+               margin: EdgeInsets.all(8.0),
+               child: ListTile(
+                 title: Text(flashcards[index].question),
+                 onTap: () {
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(
+                       builder: (context) => FlashcardDetail(flashcard: flashcards[index]),
+                     ),
+                   );
+                 },
+               ),
+             );
+           },
+         ),
+       );
+     }
+   }
+
+   class FlashcardDetail extends StatelessWidget {
+     final Flashcard flashcard;
+
+     FlashcardDetail({required this.flashcard});
+
+     @override
+     Widget build(BuildContext context) {
+       return Scaffold(
+         appBar: AppBar(
+           title: Text('Answer'),
+         ),
+         body: Center(
+           child: Padding(
+             padding: EdgeInsets.all(16.0),
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 Text(
+                   flashcard.question,
+                   style: TextStyle(fontSize: 24),
+                   textAlign: TextAlign.center,
+                 ),
+                 SizedBox(height: 20),
+                 Text(
+                   flashcard.answer,
+                   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                   textAlign: TextAlign.center,
+                 ),
+                 SizedBox(height: 40),
+                 ElevatedButton(
+                   onPressed: () {
+                     Navigator.pop(context);
+                   },
+                   child: Text('Back to flash cards list'),
+                 ),
+               ],
+             ),
+           ),
+         ),
+       );
+     }
+   }
+
+   class Flashcard {
+     final String question;
+     final String answer;
+
+     Flashcard({required this.question, required this.answer});
+   }
